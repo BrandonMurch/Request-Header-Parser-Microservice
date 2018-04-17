@@ -6,20 +6,22 @@ const app = express();
 
 //app.use(express.static(__dirname + '/build'));
 
-const logIP = (remote, header, req) => {
+const logIP = (headers, header, language, userAgent) => {
+  const ipRegExp = /(\d){1,3}\.(\d){1,3}\.(\d){1,3}\.(\d){1,3}/gi
+  let ip = ipRegExp.exec(header);
   return {
-    'remote' : remote,
-    'header' : header,
-    'req' : req,
-    'test' : 'test'
+    'IP' : ip,
+    'Header' : headers,
+    'Language' : language,
+    'User Agent' : userAgent
   }
 }
 
 app.get('/', (req, res) => {
-  let response = logIP(req.connection.remoteAddress, req.headers['x-forwarded-for'], req.ip)
+  let response = logIP(req.headers, req.headers['x-forwarded-for'], req.acceptsLanguages, req.headers['User-Agent'])
   //res.sendFile(path.join(__dirname + '/build/index.html'));
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify(response));
 })
 
-app.listen(PORT);
+app.listen(PORT, () => {console.log('Running!')});
