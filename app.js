@@ -1,27 +1,28 @@
 const express = require('express');
 const path = require('path');
 const PORT = process.env.PORT || 5000
-//const geolocation = require('geolocation')
 const app = express();
 
-//app.use(express.static(__dirname + '/build'));
-
-const logIP = (headers, header, language, userAgent) => {
+const logIP = (header, language, userAgent) => {
+  // ddd.ddd.ddd.ddd
   const ipRegExp = /(\d){1,3}\.(\d){1,3}\.(\d){1,3}\.(\d){1,3}/gi
+  //en-us
+  const langRegExp = /^([A-z\-])+/gi
   let ip = ipRegExp.exec(header);
+  let lang = langRegExp.exec(language);
   return {
-    'IP' : ip,
-    'Header' : headers,
-    'Language' : language,
-    'User Agent' : userAgent
+    'IP': ip[0],
+    'Language': lang[0],
+    'User Agent': userAgent
   }
 }
 
 app.get('/', (req, res) => {
-  let response = logIP(req.headers, req.headers['x-forwarded-for'], req.acceptsLanguages, req.headers['User-Agent'])
-  //res.sendFile(path.join(__dirname + '/build/index.html'));
+  let response = logIP(req.headers['x-forwarded-for'], req.headers['accept-language'], req.headers['user-agent'])
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify(response));
 })
 
-app.listen(PORT, () => {console.log('Running!')});
+app.listen(PORT, () => {
+  console.log('Running!')
+});

@@ -11,10 +11,5 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.16.3",
-    "geolocation": "^0.2.0"
-  },
-  "devDependencies": {
-    "request": "^2.85.0",
-    "tape": "^4.9.0"
-  }
+  },s
 }
