@@ -6,9 +6,11 @@ const parseHeader = app.parseHeader;
 
 describe('RegExp', () => {
   let header = parseHeader('183.84.8.383l;akjiek3333kfj9', 'en-us:4850P=03', 'mozilla');
-  let expected = {'IP': '183.84.8.383',
-  'Language': 'en-us',
-  'User Agent': 'mozilla'};
+  let expected = {
+    'IP': '183.84.8.383',
+    'Language': 'en-us',
+    'User Agent': 'mozilla'
+  };
   it('should return parsed IP', () => {
     assert.equal(header['IP'], expected['IP'], 'Ip is parsed incorrectly');
   });
